@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tellerterminalclient;
 
 import ejb.session.stateless.AtmCardSessionBeanRemote;
@@ -12,7 +7,7 @@ import javax.ejb.EJB;
 
 /**
  *
- * @author dtjldamien
+ * @author sw_be
  */
 public class Main {
     

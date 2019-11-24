@@ -1,26 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package automatedtellermachineclient;
 
 import ejb.session.stateless.AtmCardSessionBeanRemote;
+import entity.AtmCard;
 import entity.DepositAccount;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Scanner;
+import util.exception.AtmCardIncorrectPinException;
 import util.exception.AtmCardNotFoundException;
 import util.exception.InvalidAtmCardException;
 
 /**
  *
- * @author dtjldamien
+ * @author sw_be
  */
 public class MainApp {
 
     private AtmCardSessionBeanRemote atmCardSessionBeanRemote;
     private Long atmCardId;
+    private AtmCard atmCard;
 
     public MainApp() {
     }
@@ -30,7 +28,7 @@ public class MainApp {
         this.atmCardSessionBeanRemote = atmCardSessionBeanRemote;
     }
 
-    public void runApp() {
+    public void runApp() throws AtmCardNotFoundException, AtmCardIncorrectPinException {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
         while (true) {
@@ -60,11 +58,12 @@ public class MainApp {
         }
     }
 
-    private void doInsertAtmCard() throws InvalidAtmCardException {
+    private void doInsertAtmCard() throws InvalidAtmCardException, AtmCardNotFoundException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("RCBS :: Do Insert Atm Card");
+        System.out.println("RCBS :: Please Insert Atm Card");
         System.out.println("Enter ATM Card Id> ");
-        this.atmCardId = scanner.nextLong();
+        atmCardId = scanner.nextLong();
+        atmCard = atmCardSessionBeanRemote.retrieveAtmCardByAtmCardId(atmCardId);
         scanner.nextLine();
     }
 
@@ -74,7 +73,7 @@ public class MainApp {
 
         while (true) {
             System.out.println("*** Welcome to RCBS - ATM ***\n");
-            System.out.println("Your are logged in as " + atmCardId + "\n");
+            System.out.println("You are logged in as " + atmCardId + "\n");
             System.out.println("1: Change PIN");
             System.out.println("2: Enquire available balance");
             System.out.println("3: Logout\n");

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tellerterminalclient;
 
 import ejb.session.stateless.AtmCardSessionBeanRemote;
@@ -16,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import util.enumeration.DepositAccountType;
-import util.exception.AtmCardNumberExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerUsernameExistException;
 import util.exception.DepositAccountExistException;
@@ -25,7 +19,7 @@ import util.exception.UnknownPersistenceException;
 
 /**
  *
- * @author dtjldamien
+ * @author sw_be
  */
 public class MainApp {
 
@@ -147,7 +141,7 @@ public class MainApp {
             System.out.print("Enter postal code> ");
             newCustomer.setPostalCode(scanner.nextLine().trim());
             newCustomer = customerSessionBeanRemote.createNewCustomer(newCustomer);
-        } catch (Exception ex) {
+        } catch (CustomerUsernameExistException | UnknownPersistenceException ex) {
             System.out.println("Error occured when creating the new customer " + ex.getMessage());
         }
     }
@@ -173,6 +167,7 @@ public class MainApp {
                     break;
                 } else {
                     System.out.println("Invalid option, please try again!\n");
+                    return;
                 }
             }
             System.out.println("Enter initial deposit amount> $");
@@ -182,9 +177,7 @@ public class MainApp {
             newDepositAccount.setLedgerBalance(newDepositAccount.getAvailableBalance());
             newDepositAccount = depositAccountSessionBeanRemote.openNewDepositAccount(newDepositAccount, customerId);
             System.out.println("Successfully created new deposit account " + newDepositAccount.getAccountNumber() + "!\n");
-        } catch (CustomerNotFoundException ex) {
-            System.out.println(ex.getMessage() + "!\n");
-        } catch (UnknownPersistenceException ex) {
+        } catch (CustomerNotFoundException | UnknownPersistenceException ex) {
             System.out.println(ex.getMessage() + "!\n");
         } catch (DepositAccountExistException ex) {
             System.out.println("Deposit Account already exists! " + ex.getMessage() + "!\n");

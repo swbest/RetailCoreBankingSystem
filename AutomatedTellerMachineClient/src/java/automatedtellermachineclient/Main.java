@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package automatedtellermachineclient;
 
 import ejb.session.stateless.AtmCardSessionBeanRemote;
 import javax.ejb.EJB;
+import util.exception.AtmCardIncorrectPinException;
+import util.exception.AtmCardNotFoundException;
 
 /**
  *
- * @author dtjldamien
+ * @author sw_be
  */
 public class Main {
 
@@ -20,7 +17,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AtmCardNotFoundException, AtmCardIncorrectPinException {
         // TODO code application logic here
         MainApp mainApp = new MainApp(atmCardSessionBeanRemote);
         mainApp.runApp();

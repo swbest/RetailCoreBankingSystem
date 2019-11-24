@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author dtjldamien
+ * @author sw_be
  */
 @Singleton
 @LocalBean

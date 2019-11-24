@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
 import entity.AtmCard;
@@ -16,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import util.exception.AtmCardIncorrectPinException;
 import util.exception.AtmCardLinkDepositAccountException;
 import util.exception.AtmCardNotFoundException;
 import util.exception.AtmCardNumberExistException;
@@ -26,7 +22,7 @@ import util.exception.UnknownPersistenceException;
 
 /**
  *
- * @author dtjldamien
+ * @author sw_be
  */
 @Stateless
 @Local(AtmCardSessionBeanLocal.class)
@@ -95,6 +91,15 @@ public class AtmCardSessionBean implements AtmCardSessionBeanLocal, AtmCardSessi
             throw new AtmCardNotFoundException("Atm Card ID " + atmCard + " does not exist");
         }
     }
+    
+    @Override
+    public Boolean verifyPin(AtmCard atmCard, String currPin) throws AtmCardIncorrectPinException {
+        if (atmCard.getPin().equals(currPin)) {
+            return true;
+        } else {
+            throw new AtmCardIncorrectPinException("Invalid pin number! Please try again.");
+        }
+    }
 
     @Override
     public void changePin(Long atmCardId, String currPin, String newPin) throws AtmCardNotFoundException {
@@ -102,7 +107,7 @@ public class AtmCardSessionBean implements AtmCardSessionBeanLocal, AtmCardSessi
         if (atmCard.getPin().equals(currPin)) {
             atmCard.setPin(newPin);
         } else {
-            throw new AtmCardNotFoundException("Card number of AtmCard record to be updated does not match the existing record");
+            throw new AtmCardNotFoundException("ATM Card is invalid! ");
         }
     }
 
